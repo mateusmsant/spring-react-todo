@@ -4,15 +4,18 @@
   box-sizing: border-box;
 }
 
+body {
+  color: #4fc3f7 !important;
+}
+
 .button-divider {
-  width: 1rem;
+  width: 0.5rem;
 }
 
 .spinner-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90vh;
 }
 
 .spinner {
@@ -22,17 +25,16 @@
 }
 
 .footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
   width: 100%;
-  height: 50px;
-  background-color: #000;
-  text-align: center;
-  color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: #000;
+  color: #fff;
+  height: 50px;
 }
 
 .link {
@@ -44,4 +46,23 @@
 .link:hover {
   color: #f231a5;
   font-weight: 700;
+}
+
+.todos-wrapper {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.empty {
+  margin-top: 5rem;
+}
+
+th {
+  color: #4fc3f7 !important;
+  font-weight: 300;
+}
+
+.middle {
+  vertical-align: middle;
 }

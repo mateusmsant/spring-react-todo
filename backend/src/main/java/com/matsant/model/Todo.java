@@ -12,7 +12,7 @@ public class Todo {
 	@Column(name = "title")
 	private String title;
 
-	@Column(name = "is_done")
+	@Column(name = "isDone")
 	private boolean isDone;
 	
 	public Todo() {}

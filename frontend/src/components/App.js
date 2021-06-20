@@ -1,17 +1,17 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import TodoList from "./todos/TodoList";
+import Todos from "./todos/Todos";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
 
 const App = () => {
   return (
-    <div>
+    <div className="main">
       <Router>
         <Header />
         <div className="container">
           <Switch>
-            <Route path="/" component={TodoList} />
+            <Route exact path="/" component={Todos} />
           </Switch>
         </div>
         <Footer />
