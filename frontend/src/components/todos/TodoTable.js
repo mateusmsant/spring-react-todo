@@ -1,31 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useTodo } from "../../context/todoContext";
-import TodoDelete from "./TodoDelete";
-import TodoUpdate from "./TodoUpdate";
+import { useModal } from "../../context/modalContext";
+import TodoModal from "./TodoModal";
 
 const TodoTable = () => {
-  const {
-    showDeleteModal,
-    showUpdateModal,
-    handleShowUpdateModal,
-    handleShowDeleteModal,
-    todos,
-    handleStatusChange,
-    setFormType,
-    sortTodos,
-  } = useTodo();
-
-  useEffect(() => {
-    showUpdateModal ? setFormType("update") : setFormType("create");
-  }, [setFormType, showUpdateModal]);
+  const { todos, handleStatusChange, sortTodos } = useTodo();
+  const { showModal, handleShowModal } = useModal();
 
   const renderModal = () => {
-    if (showDeleteModal) {
-      return <TodoDelete />;
-    }
-
-    if (showUpdateModal) {
-      return <TodoUpdate />;
+    if (showModal) {
+      return <TodoModal />;
     }
   };
 
@@ -41,14 +25,14 @@ const TodoTable = () => {
             <div className="d-flex justify-content-center">
               <button
                 className="btn btn-sm btn-outline-success"
-                onClick={() => handleShowUpdateModal(todo.id, todo.title)}
+                onClick={() => handleShowModal(todo.id, todo.title, "update")}
               >
                 Atualizar
               </button>
               <div className="button-divider"></div>
               <button
                 className="btn btn-sm btn-outline-danger"
-                onClick={() => handleShowDeleteModal(todo.id, todo.title)}
+                onClick={() => handleShowModal(todo.id, todo.title, "delete")}
               >
                 Deletar
               </button>
@@ -70,7 +54,7 @@ const TodoTable = () => {
 
   return (
     <div>
-      {(showDeleteModal || showUpdateModal) && <div>{renderModal()}</div>}
+      {showModal && <div>{renderModal()}</div>}
       <div className="row" style={{ margin: "0 auto" }}>
         <table className="table">
           <thead>

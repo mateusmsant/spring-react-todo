@@ -5,12 +5,12 @@ const TodoContext = createContext();
 
 export default function TodoProvider({ children }) {
   const [todos, setTodos] = useState(null);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [todoId, setTodoId] = useState(null);
+  const [formType, setFormType] = useState("create");
   const [todoTitle, setTodoTitle] = useState(null);
   const [serverError, setServerError] = useState(false);
-  const [formType, setFormType] = useState("create");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   const handleDelete = async () => {
     if (todoId) {
@@ -78,30 +78,8 @@ export default function TodoProvider({ children }) {
     setTodoTitle(title);
   };
 
-  const handleUpdateSubmit = async (e) => {
-    e.preventDefault();
-    const newTodoTitle = e.target.title.value;
-    if (newTodoTitle && !hasOnlyEmptySpaces(newTodoTitle)) {
-      const updatedTodos = todos.map((todo) => {
-        if (todo.id === todoId) {
-          todo.title = newTodoTitle;
-          updateTodo(todoId, todo);
-        }
-        return todo;
-      });
-
-      if (updatedTodos) {
-        setTodos(updatedTodos);
-      }
-    }
-  };
-
   const updateTodo = async (id, updatedTodo) => {
     await todoApi.put(`/todos/${id}`, updatedTodo);
-  };
-
-  const sortTodos = () => {
-    console.log(todos);
   };
 
   return (
@@ -121,10 +99,8 @@ export default function TodoProvider({ children }) {
         todoId,
         todoTitle,
         handleDelete,
-        handleUpdateSubmit,
         formType,
         setFormType,
-        sortTodos,
         serverError,
       }}
     >

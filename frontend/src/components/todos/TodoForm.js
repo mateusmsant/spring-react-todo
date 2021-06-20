@@ -1,8 +1,10 @@
 import React from "react";
+import { useModal } from "../../context/modalContext";
 import { useTodo } from "../../context/todoContext";
 
 const TodoForm = ({ button, label }) => {
-  const { handleCreateSubmit, handleUpdateSubmit, formType } = useTodo();
+  const { handleCreateSubmit } = useTodo();
+  const { handleUpdateSubmit, formType } = useModal();
 
   return (
     <form
