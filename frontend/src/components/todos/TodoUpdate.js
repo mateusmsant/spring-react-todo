@@ -1,56 +1,24 @@
 import React from "react";
-import { Modal, Button } from "react-bootstrap";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 import TodoForm from "./TodoForm";
-import todoApi from "../../api/todoApi";
+import { useTodo } from "../../context/todoContext";
 
-const TodoUpdate = ({
-  todoTitle,
-  todoId,
-  showUpdateModal,
-  handleClose,
-  todos,
-  setTodos,
-  hasOnlyEmptySpaces,
-}) => {
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    const newTodoTitle = e.target.title.value;
-    if (newTodoTitle && !hasOnlyEmptySpaces(newTodoTitle)) {
-      const updatedTodos = todos.map((todo) => {
-        if (todo.id === todoId) {
-          todo.title = newTodoTitle;
-          if (todo.done) {
-            updateTodo(todoId, { title: newTodoTitle, done: true });
-          } else {
-            updateTodo(todoId, { title: newTodoTitle, done: false });
-          }
-        }
-        return todo;
-      });
+const TodoUpdate = () => {
+  const { showUpdateModal, handleClose, setFormType } = useTodo();
 
-      if (updatedTodos) {
-        setTodos(updatedTodos);
-      }
-    }
-  };
-
-  const updateTodo = async (id, updatedTodo) => {
-    await todoApi.put(`/todos/${id}`, updatedTodo);
-  };
+  if (!showUpdateModal) {
+    setFormType("create");
+  }
 
   return (
     <form>
       <Modal show={showUpdateModal} onHide={handleClose}>
         <Modal.Header>
-          <Modal.Title>Deletar task</Modal.Title>
+          <Modal.Title>Atualizar tarefa</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <TodoForm
-            handleFormSubmit={handleFormSubmit}
-            label="Novo título"
-            setTodos={setTodos}
-            button="Atualizar"
-          />
+          <TodoForm label="Novo título" button="Atualizar" />
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" size="sm" onClick={handleClose}>
