@@ -1,14 +1,11 @@
 import React from "react";
 
 const Footer = () => {
-  const data =
-    '{ frontend: "React", backend: "Spring", author: "github.com/mateusmsant" }';
+  const tech = '{ frontend: "React", backend: "Spring" }';
   return (
     <div>
       <footer className="footer">
-        <span className="text-muted">
-          <code>{`this.getData() = ${data}`}</code>
-        </span>
+        <code>{`this.getTech() = ${tech}`}</code>
       </footer>
     </div>
   );

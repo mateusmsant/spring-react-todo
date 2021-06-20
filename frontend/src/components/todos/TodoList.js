@@ -1,21 +1,33 @@
 import React, { useState } from "react";
 import { ReactComponent as Spinner } from "../../res/spinner.svg";
-import TodoDelete from "./TodoDelete";
 import empty from "../../res/empty.png";
+import TodoDelete from "./TodoDelete";
+import TodoUpdate from "./TodoUpdate";
 
 const TodoList = ({
   todos,
   setTodos,
   handleStatusChange,
-  handleTaskDelete,
+  hasOnlyEmptySpaces,
 }) => {
   const [show, setShow] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [todoId, setTodoId] = useState(null);
   const [todoTitle, setTodoTitle] = useState(null);
-  const handleClose = () => setShow(false);
 
-  const handleShow = (id, title) => {
+  const handleClose = () => {
+    setShow(false);
+    setShowUpdateModal(false);
+  };
+
+  const handleShowDeleteModal = (id, title) => {
     setShow(true);
+    setTodoId(id);
+    setTodoTitle(title);
+  };
+
+  const handleShowUpdateModal = (id, title) => {
+    setShowUpdateModal(true);
     setTodoId(id);
     setTodoTitle(title);
   };
@@ -37,8 +49,38 @@ const TodoList = ({
     );
   }
 
+  const renderModal = () => {
+    if (show) {
+      return (
+        <TodoDelete
+          todos={todos}
+          setTodos={setTodos}
+          show={show}
+          todoId={todoId}
+          todoTitle={todoTitle}
+          handleClose={handleClose}
+        />
+      );
+    }
+
+    if (showUpdateModal) {
+      return (
+        <TodoUpdate
+          todos={todos}
+          setTodos={setTodos}
+          showUpdateModal={showUpdateModal}
+          todoId={todoId}
+          todoTitle={todoTitle}
+          handleClose={handleClose}
+          hasOnlyEmptySpaces={hasOnlyEmptySpaces}
+        />
+      );
+    }
+  };
+
   return (
     <div>
+      <div>{renderModal()}</div>
       <div className="row" style={{ margin: "0 auto" }}>
         <table className="table">
           <thead>
@@ -57,15 +99,22 @@ const TodoList = ({
                   </td>
                   <td className="middle text-center w-100">
                     <div className="d-flex justify-content-center">
-                      <button className="btn btn-sm btn-success outlined">
-                        Update
+                      <button
+                        className="btn btn-sm btn-outline-success"
+                        onClick={() =>
+                          handleShowUpdateModal(todo.id, todo.title)
+                        }
+                      >
+                        Atualizar
                       </button>
                       <div className="button-divider"></div>
                       <button
-                        className="btn btn-sm btn-danger outlined"
-                        onClick={() => handleShow(todo.id, todo.title)}
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={() =>
+                          handleShowDeleteModal(todo.id, todo.title)
+                        }
                       >
-                        Delete
+                        Deletar
                       </button>
                     </div>
                   </td>
@@ -86,17 +135,6 @@ const TodoList = ({
           </tbody>
         </table>
       </div>
-      {show && (
-        <TodoDelete
-          todos={todos}
-          setTodos={setTodos}
-          show={show}
-          todoId={todoId}
-          todoTitle={todoTitle}
-          handleShow={handleShow}
-          handleClose={handleClose}
-        />
-      )}
     </div>
   );
 };

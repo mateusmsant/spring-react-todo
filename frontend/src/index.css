@@ -27,6 +27,7 @@ body {
 .footer {
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   position: fixed;
@@ -34,7 +35,7 @@ body {
   left: 0;
   background-color: #000;
   color: #fff;
-  height: 50px;
+  height: 75px;
 }
 
 .link {
@@ -54,10 +55,6 @@ body {
   flex-direction: column;
 }
 
-.empty {
-  margin-top: 5rem;
-}
-
 th {
   color: #4fc3f7 !important;
   font-weight: 300;
@@ -65,4 +62,24 @@ th {
 
 .middle {
   vertical-align: middle;
+}
+
+.row {
+  display: block !important;
+  justify-content: space-between !important;
+}
+
+.empty {
+  margin-top: 4.2rem;
+}
+
+@media (max-width: 980px) {
+  .empty {
+    margin-top: 5.5rem;
+  }
+
+  img {
+    margin-top: 1rem;
+    width: 80% !important;
+  }
 }

@@ -10,15 +10,13 @@ const TodoDelete = ({
   todos,
   setTodos,
 }) => {
-  console.log(todoTitle);
-
   const handleDelete = async () => {
     if (todoId) {
       await todoApi.delete(`/todos/${todoId}`);
       const updatedTodos = todos.filter((todo) => todo.id !== todoId);
       setTodos(updatedTodos);
-      handleClose();
     }
+    handleClose();
   };
 
   return (

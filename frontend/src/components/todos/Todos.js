@@ -14,10 +14,8 @@ const Todos = () => {
       }
     };
 
-    setTimeout(() => {
-      fetchTodos();
-    }, 1000);
-  });
+    fetchTodos();
+  }, []);
 
   const updateTodo = async (id, updatedTodo) => {
     await todoApi.put(`/todos/${id}`, updatedTodo);
@@ -34,21 +32,41 @@ const Todos = () => {
     setTodos(updatedTodos);
   };
 
-  const handleTaskDelete = async (id) => {
-    await todoApi.delete(`/todos/${id}`);
-    const updatedTodos = todos.filter((todo) => id !== todo.id);
-    setTodos(updatedTodos);
+  const hasOnlyEmptySpaces = (value) => {
+    return !/\S/.test(value);
+  };
+
+  const handleFormSubmit = async (e) => {
+    console.log("oi");
+    e.preventDefault();
+    const newTodoTitle = e.target.title.value;
+    if (newTodoTitle && !hasOnlyEmptySpaces(newTodoTitle)) {
+      await todoApi.post("/todos", {
+        title: newTodoTitle,
+        done: false,
+      });
+
+      const newTodos = await todoApi.get("/todos");
+      if (newTodos) {
+        setTodos(newTodos.data);
+      }
+    }
   };
 
   return (
     <div className="todos-wrapper">
-      <h2 className="text-center">Todos</h2>
-      <TodoForm setTodos={setTodos} />
+      <TodoForm
+        setTodos={setTodos}
+        handleFormSubmit={handleFormSubmit}
+        button="Adicionar"
+        label="Nova tarefa"
+      />
+      <hr />
       <TodoList
         setTodos={setTodos}
         todos={todos}
         handleStatusChange={handleStatusChange}
-        handleTaskDelete={handleTaskDelete}
+        hasOnlyEmptySpaces={hasOnlyEmptySpaces}
       />
     </div>
   );

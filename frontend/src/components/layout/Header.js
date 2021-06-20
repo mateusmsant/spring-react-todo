@@ -7,7 +7,7 @@ const Header = () => {
       <header>
         <nav className="navbar navbar-expand-md navbar-dark bg-dark text-center">
           <Link to="/" className="link">
-            <h3>Todo list com React e Spring</h3>
+            <h3>Tarefas</h3>
           </Link>
         </nav>
       </header>
