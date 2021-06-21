@@ -8,7 +8,7 @@
 
 ## Sobre
 
-Esse foi um pequeno projeto pra iniciar no desenvolvimento de APIs com Spring\
+Esse foi um pequeno projeto pra iniciar no desenvolvimento de APIs com Spring
 
 ## Instalando
 
