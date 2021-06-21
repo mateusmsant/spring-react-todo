@@ -3,7 +3,7 @@ package com.matsant.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "todos")
+@Table(name = "todo_mateusmsant")
 public class Todo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
