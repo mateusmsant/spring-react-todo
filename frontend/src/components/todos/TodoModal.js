@@ -6,13 +6,13 @@ import { useModal } from "../../context/modalContext";
 
 const TodoModal = () => {
   const {
-    todoTitle,
     todoId,
     handleDelete,
     modalTitle,
     showModal,
     formType,
     handleClose,
+    deleteModalTitle,
   } = useModal();
 
   return (
@@ -25,7 +25,7 @@ const TodoModal = () => {
           {formType === "update" ? (
             <TodoForm label="Novo título" button="Atualizar" />
           ) : (
-            `Tem certeza que quer excluir a tarefa ${todoTitle}?`
+            `Tem certeza que quer excluir a tarefa ${deleteModalTitle}?`
           )}
         </Modal.Body>
         <Modal.Footer>

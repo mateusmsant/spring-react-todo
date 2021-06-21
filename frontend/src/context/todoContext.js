@@ -5,23 +5,7 @@ const TodoContext = createContext();
 
 export default function TodoProvider({ children }) {
   const [todos, setTodos] = useState(null);
-  const [todoId, setTodoId] = useState(null);
-  const [formType, setFormType] = useState("create");
-  const [todoTitle, setTodoTitle] = useState(null);
   const [serverError, setServerError] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showUpdateModal, setShowUpdateModal] = useState(false);
-
-  const handleDelete = async () => {
-    if (todoId) {
-      const response = await todoApi.delete(`/todos/${todoId}`);
-      if (response.status === 200) {
-        const updatedTodos = todos.filter((todo) => todo.id !== todoId);
-        setTodos(updatedTodos);
-      }
-    }
-    handleClose();
-  };
 
   const fetchTodos = async () => {
     const response = await todoApi
@@ -46,38 +30,6 @@ export default function TodoProvider({ children }) {
     setTodos(updatedTodos);
   };
 
-  const handleCreateSubmit = async (e) => {
-    e.preventDefault();
-    const newTodoTitle = e.target.title.value;
-    if (newTodoTitle && !hasOnlyEmptySpaces(newTodoTitle)) {
-      const newTodo = { title: newTodoTitle, done: false };
-      const response = await todoApi.post("/todos", newTodo);
-      const addedTodo = response.data;
-      setTodos([...todos, addedTodo]);
-    }
-  };
-
-  const hasOnlyEmptySpaces = (value) => {
-    return !/\S/.test(value);
-  };
-
-  const handleClose = () => {
-    setShowDeleteModal(false);
-    setShowUpdateModal(false);
-  };
-
-  const handleShowDeleteModal = (id, title) => {
-    setShowDeleteModal(true);
-    setTodoId(id);
-    setTodoTitle(title);
-  };
-
-  const handleShowUpdateModal = (id, title) => {
-    setShowUpdateModal(true);
-    setTodoId(id);
-    setTodoTitle(title);
-  };
-
   const updateTodo = async (id, updatedTodo) => {
     await todoApi.put(`/todos/${id}`, updatedTodo);
   };
@@ -90,17 +42,6 @@ export default function TodoProvider({ children }) {
         fetchTodos,
         updateTodo,
         handleStatusChange,
-        handleCreateSubmit,
-        handleClose,
-        handleShowDeleteModal,
-        handleShowUpdateModal,
-        showDeleteModal,
-        showUpdateModal,
-        todoId,
-        todoTitle,
-        handleDelete,
-        formType,
-        setFormType,
         serverError,
       }}
     >

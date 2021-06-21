@@ -1,10 +1,24 @@
 import React from "react";
 import { useModal } from "../../context/modalContext";
-import { useTodo } from "../../context/todoContext";
+import { useForm } from "../../context/formContext";
 
 const TodoForm = ({ button, label }) => {
-  const { handleCreateSubmit } = useTodo();
-  const { handleUpdateSubmit, formType } = useModal();
+  const { formType } = useModal();
+  const {
+    handleCreateSubmit,
+    handleUpdateSubmit,
+    newTitle,
+    setNewTitle,
+    currentTitle,
+    setCurrentTitle,
+  } = useForm();
+
+  const handleChangeMethod = () => {
+    if (formType === "create") {
+      return (e) => setNewTitle(e.target.value);
+    }
+    return (e) => setCurrentTitle(e.target.value);
+  };
 
   return (
     <form
@@ -13,7 +27,14 @@ const TodoForm = ({ button, label }) => {
     >
       <div className="mb-3">
         <label className="form-label">{label}</label>
-        <input type="text" className="form-control" id="title" name="title" />
+        <input
+          type="text"
+          className="form-control"
+          id="title"
+          name="title"
+          value={formType === "create" ? newTitle : currentTitle}
+          onChange={handleChangeMethod()}
+        />
       </div>
       <button
         type="submit"
