@@ -2,45 +2,45 @@ import React from "react";
 import { useModal } from "../../context/modalContext";
 import { useForm } from "../../context/formContext";
 
-const TodoForm = ({ button, label }) => {
-  const { formType } = useModal();
+const TodoForm = ({ button }) => {
+  const { formType, setCurrentTitle } = useModal();
   const {
     handleCreateSubmit,
     handleUpdateSubmit,
     newTitle,
     setNewTitle,
     currentTitle,
-    setCurrentTitle,
   } = useForm();
 
-  const handleChangeMethod = () => {
-    if (formType === "create") {
-      return (e) => setNewTitle(e.target.value);
-    }
-    return (e) => setCurrentTitle(e.target.value);
-  };
+  const isFormTypeCreate = formType === "create";
 
   return (
     <form
-      onSubmit={formType === "create" ? handleCreateSubmit : handleUpdateSubmit}
+      onSubmit={isFormTypeCreate ? handleCreateSubmit : handleUpdateSubmit}
       className="d-flex flex-column"
     >
       <div className="mb-3">
-        <label className="form-label">{label}</label>
+        <label className="form-label">
+          {isFormTypeCreate ? "Nova tarefa" : "Atualizar tarefa"}
+        </label>
         <input
           type="text"
           className="form-control"
           id="title"
           name="title"
-          value={formType === "create" ? newTitle : currentTitle}
-          onChange={handleChangeMethod()}
+          value={isFormTypeCreate ? newTitle : currentTitle}
+          onChange={
+            isFormTypeCreate
+              ? (e) => setNewTitle(e.target.value)
+              : (e) => setCurrentTitle(e.target.value)
+          }
         />
       </div>
       <button
         type="submit"
         className="btn btn-outline-primary w-25 my-0 mx-auto"
       >
-        {button}
+        {isFormTypeCreate ? "Adicionar" : "Atualizar"}
       </button>
     </form>
   );

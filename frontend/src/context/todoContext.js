@@ -5,7 +5,7 @@ const TodoContext = createContext();
 
 export default function TodoProvider({ children }) {
   const [todos, setTodos] = useState(null);
-  const [serverError, setServerError] = useState(false);
+  const [serverError, setServerError] = useState(null);
 
   const fetchTodos = async () => {
     const response = await todoApi
@@ -43,6 +43,7 @@ export default function TodoProvider({ children }) {
         updateTodo,
         handleStatusChange,
         serverError,
+        setServerError,
       }}
     >
       {children}

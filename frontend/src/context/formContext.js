@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, useState } from "react";
 import todoApi from "../api/todoApi";
 import { useTodo } from "./todoContext";
 import { useModal } from "./modalContext";
@@ -6,24 +6,22 @@ import { useModal } from "./modalContext";
 const FormContext = createContext();
 
 export default function ModalProvider({ children }) {
-  const { todos, setTodos } = useTodo();
-  const {
-    todoId,
-    handleClose,
-    newTitle,
-    setNewTitle,
-    currentTitle,
-    setCurrentTitle,
-  } = useModal();
+  const { todos, setTodos, serverError, setServerError } = useTodo();
+  const { todoId, handleClose, currentTitle } = useModal();
+  const [newTitle, setNewTitle] = useState("");
 
   const handleCreateSubmit = async (e) => {
     e.preventDefault();
-    const newTodoTitle = e.target.title.value;
-    if (newTodoTitle && !hasOnlyEmptySpaces(newTodoTitle)) {
-      const newTodo = { title: newTodoTitle, done: false };
-      const response = await todoApi.post("/todos", newTodo);
-      const addedTodo = response.data;
-      setTodos([...todos, addedTodo]);
+    if (!serverError) {
+      const newTodoTitle = e.target.title.value;
+      if (newTodoTitle && !hasOnlyEmptySpaces(newTodoTitle)) {
+        const newTodo = { title: newTodoTitle, done: false };
+        const response = await todoApi.post("/todos", newTodo).catch((e) => {
+          setServerError(true);
+        });
+        const addedTodo = response.data;
+        setTodos([...todos, addedTodo]);
+      }
     }
   };
 
@@ -51,7 +49,9 @@ export default function ModalProvider({ children }) {
   };
 
   const updateTodo = async (id, updatedTodo) => {
-    await todoApi.put(`/todos/${id}`, updatedTodo);
+    await todoApi.put(`/todos/${id}`, updatedTodo).catch((e) => {
+      setServerError(true);
+    });
   };
 
   return (
@@ -62,7 +62,6 @@ export default function ModalProvider({ children }) {
         newTitle,
         setNewTitle,
         currentTitle,
-        setCurrentTitle,
       }}
     >
       {children}
@@ -73,7 +72,7 @@ export default function ModalProvider({ children }) {
 export function useForm() {
   const formContext = useContext(FormContext);
   if (!formContext) {
-    throw new Error("Missing TodoProvider");
+    throw new Error("Missing FormProvider");
   }
   return formContext;
 }

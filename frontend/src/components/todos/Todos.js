@@ -13,7 +13,7 @@ const Todos = () => {
 
   return (
     <div className="todos-wrapper">
-      <TodoForm button="Adicionar" label="Nova tarefa" />
+      <TodoForm />
       <hr />
       <TodoList />
     </div>

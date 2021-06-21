@@ -7,11 +7,10 @@ const ModalContext = createContext();
 export default function ModalProvider({ children }) {
   const { todos, setTodos } = useTodo();
   const [todoId, setTodoId] = useState(null);
-  const [newTitle, setNewTitle] = useState("");
-  const [currentTitle, setCurrentTitle] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [formType, setFormType] = useState("create");
   const [deleteModalTitle, setDeleteModalTitle] = useState("");
+  const [currentTitle, setCurrentTitle] = useState("");
 
   const handleDelete = async () => {
     if (todoId) {
@@ -32,9 +31,9 @@ export default function ModalProvider({ children }) {
   const handleShowModal = (id, title, type) => {
     setShowModal(true);
     setTodoId(id);
+    setFormType(type);
     setCurrentTitle(title);
     setDeleteModalTitle(title);
-    setFormType(type);
   };
 
   return (
@@ -47,11 +46,9 @@ export default function ModalProvider({ children }) {
         handleShowModal,
         handleDelete,
         setFormType,
-        newTitle,
-        setNewTitle,
+        deleteModalTitle,
         currentTitle,
         setCurrentTitle,
-        deleteModalTitle,
       }}
     >
       {children}
@@ -62,7 +59,7 @@ export default function ModalProvider({ children }) {
 export function useModal() {
   const modalContext = useContext(ModalContext);
   if (!modalContext) {
-    throw new Error("Missing TodoProvider");
+    throw new Error("Missing ModalProvider");
   }
   return modalContext;
 }
