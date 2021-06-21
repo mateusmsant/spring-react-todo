@@ -9,7 +9,6 @@
 ## Sobre
 
 Esse foi um pequeno projeto pra iniciar no desenvolvimento de APIs com Spring\
-Também tentei otimizar ao máximo o gerenciamento de estado no frontend separando-o em três contextos
 
 ## Instalando
 
